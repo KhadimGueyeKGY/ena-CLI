@@ -4,6 +4,7 @@ import hashlib
 import sys
 import platform
 import shutil
+import pandas as pd
 
 class XML_generator:
     
@@ -99,7 +100,7 @@ class XML_generator:
 
 
     # ------------------Method to build the submission XML file
-    def antibiogram_build_submission_xml(result_directory):
+    def build_submission_xml(result_directory):
         # Create XML elements
         submission_set = etree.Element('SUBMISSION')
         actions_elt = etree.SubElement(submission_set, 'ACTIONS')
@@ -116,9 +117,81 @@ class XML_generator:
         with open(submission_file, 'wb') as f:
             submission_xml.write(f, pretty_print=True, xml_declaration=True, encoding='UTF-8')
 
-        print(f"\033[93mSubmission XML file saved to: {submission_file}\033[0m")
+        print(f"\033[93mSubmission XML file has been saved to: {submission_file}\033[0m")
         return submission_file
+
+    def generate_sample_xml(result_directory, args):
+        try:
+            # Read the manifest file into a pandas DataFrame
+            manifest = pd.read_csv(args.manifestFile, sep='\t', header=1)
+        except Exception as e:
+            print(f"\033[91mError: Failed to read the manifest file {args.manifestFile}.\033[0m\nException: {e}")
+            sys.exit() 
+            
+        # Create the root element of the XML document
+        sample_set = etree.Element('SAMPLE_SET')
         
+        # Iterate over rows in the manifest DataFrame
+        for i in range(len(manifest)):
+            # Check if the 'tax_id' value is not NaN
+            if not pd.isna(manifest['tax_id'][i]):
+                # Ignore lines starting with '#'
+                if '#' not in manifest['tax_id'][i] :
+                    # Create a new 'SAMPLE' element
+                    sample = etree.SubElement(sample_set, 'SAMPLE', alias=manifest['sample_alias'][i])
+                    
+                    # Add 'TITLE' element to the sample
+                    title = etree.SubElement(sample, 'TITLE')
+                    title.text = manifest['sample_title'][i]
+                    
+                    # Add 'SAMPLE_NAME' element to the sample
+                    sample_name = etree.SubElement(sample, 'SAMPLE_NAME')
+                    taxon_id = etree.SubElement(sample_name, 'TAXON_ID')
+                    taxon_id.text = manifest['tax_id'][i]
+                    scientific_name = etree.SubElement(sample_name, 'SCIENTIFIC_NAME')
+                    scientific_name.text = manifest['scientific_name'][i]
+                    
+                    # Add 'SAMPLE_ATTRIBUTES' element to the sample
+                    sample_attributes = etree.SubElement(sample, 'SAMPLE_ATTRIBUTES')
+                    sample_attribute = etree.SubElement(sample_attributes, 'SAMPLE_ATTRIBUTE')
+                    tag = etree.SubElement(sample_attribute, 'TAG')
+                    tag.text = "ENA-CHECKLIST"
+                    value = etree.SubElement(sample_attribute, 'VALUE')
+                    with open(args.manifestFile, 'r') as f:
+                        line = f.read().split('\n')[0].split('\t')
+                        for e in line:
+                            if 'ERC' in e:
+                                value.text = e
+                                
+                    # Add 'SAMPLE_ATTRIBUTE' elements to the sample for each attribute in the manifest
+                    head = [h for h in manifest]
+                    for j in range(4, len(head)):
+                        if not pd.isna(manifest[head[j]][i]):
+                            sample_attribute = etree.SubElement(sample_attributes, 'SAMPLE_ATTRIBUTE')
+                            tag = etree.SubElement(sample_attribute, 'TAG')
+                            tag.text = head[j]
+                            value = etree.SubElement(sample_attribute, 'VALUE')
+                            value.text = str(manifest[head[j]][i])
+                            if head[j] in ['geographic location (latitude)','geographic location (longitude)']:
+                                units = etree.SubElement(sample_attribute, 'UNITS')
+                                units.text = 'DD'
+                            elif head[j] == 'host age':
+                                units = etree.SubElement(sample_attribute, 'UNITS')
+                                units.text = 'years'
+                            
+        # Create the XML tree
+        sample_xml = etree.ElementTree(sample_set)
+        
+        # Specify the path for the submission XML file
+        sample_file = os.path.join(result_directory, 'sample.xml')
+        
+        # Write the XML tree to the XML file
+        with open(sample_file, 'wb') as f:
+            sample_xml.write(f, pretty_print=True, xml_declaration=True, encoding='UTF-8')
+        
+        print(f"\033[93mThe sample XML file has been saved to: {sample_file}\033[0m")
+        return sample_file
+
 
     # -----------------------Calculation of the MD5 hash for a given file
     def calculate_md5(filename_full):
@@ -184,5 +257,5 @@ class XML_generator:
         output_path = os.path.join(result_directory, f'Antibiogram_for_{args.sample}.xml')
         xml_tree.write(output_path, pretty_print=True, xml_declaration=True, encoding='UTF-8')
 
-        print(f"\033[93mSubmission Set XML file saved to: {output_path}\033[0m")
+        print(f"\033[93mSubmission Set XML file has been saved to: {output_path}\033[0m")
         return output_path

@@ -22,7 +22,33 @@ python ena-CLI.py project -h
 
 ## 2. Sample Submission
 
+### Usage
+
+#### Help
+
+```
+python ena-CLI.py sample -h 
+```
+
+### Exemple
+```
+python ena-CLI.py sample -u Webin-XXXX -p 'XXXXXX' -m packages/sample_spreadsheet.tsv -t
+```
+
 ## 3. Run Submission
+
+### Usage
+
+#### Help
+
+```
+python ena-CLI.py run -h 
+```
+
+### Exemple
+```
+python ena-CLI.py run -u Webin-XXXX -p 'XXXXXX' -m packages/run_template.tsv -i test_data -c reads -t
+```
 
 ## 4. Analysis Submission 
 
