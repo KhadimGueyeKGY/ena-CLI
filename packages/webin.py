@@ -45,19 +45,20 @@ class webin:
             sys.exit() 
         head = [i for i in manifestFile]
         for i in range(len(manifestFile['sample'])):
-            if not pd.isna(manifestFile['sample'][i]):
-                manifest = os.path.join(result_directory, f"manifest_run_{manifestFile['sample'][i]}.txt")
-                with open(manifest , 'w') as file:
-                    for j in range(len(head)) : 
-                        if not pd.isna(manifestFile[head[j]][i]):
-                            if 'file_name' in head[j]:
-                                #file_name = os.path.join('../',args.inputDir,manifestFile[head[j]][i])
-                                file_name = manifestFile[head[j]][i]
-                                file.write(f"FASTQ\t{file_name}\n")
-                            else:
-                                file.write(f'{head[j].upper()}\t{manifestFile[head[j]][i]}\n')
-
-            webin.webin_submission(manifest , args, webin_cli, manifestFile['sample'][i], args.context)
+            if '#' not in manifestFile[head[0]][i]:
+                if not pd.isna(manifestFile['sample'][i]):
+                    manifest = os.path.join(result_directory, f"manifest_run_{manifestFile['sample'][i]}.txt")
+                    with open(manifest , 'w') as file:
+                        for j in range(len(head)) : 
+                            if not pd.isna(manifestFile[head[j]][i]):
+                                if 'file_name' in head[j]:
+                                    #file_name = os.path.join('../',args.inputDir,manifestFile[head[j]][i])
+                                    file_name = manifestFile[head[j]][i]
+                                    file.write(f"FASTQ\t{file_name}\n")
+                                else:
+                                    file.write(f'{head[j].upper()}\t{manifestFile[head[j]][i]}\n')
+    
+                webin.webin_submission(manifest , args, webin_cli, manifestFile['sample'][i],'reads')
 
     
     def genome_submission(result_directory,args, webin_cli):
@@ -68,13 +69,32 @@ class webin:
             sys.exit() 
         head = [i for i in manifestFile]
         for i in range(len(manifestFile['SAMPLE'])):
-            if not pd.isna(manifestFile['SAMPLE'][i]):
-                manifest = os.path.join(result_directory, f"manifest_genome_{manifestFile['SAMPLE'][i]}.txt")
-                with open(manifest , 'w') as file:
-                    for j in range(len(head)) : 
-                        if not pd.isna(manifestFile[head[j]][i]):
-                            file.write(f'{head[j].upper()}\t{manifestFile[head[j]][i]}\n')
+            if '#' not in manifestFile[head[0]][i]:
+                if not pd.isna(manifestFile['SAMPLE'][i]):
+                    manifest = os.path.join(result_directory, f"manifest_genome_{manifestFile['SAMPLE'][i]}.txt")
+                    with open(manifest , 'w') as file:
+                        for j in range(len(head)) : 
+                            if not pd.isna(manifestFile[head[j]][i]):
+                                file.write(f'{head[j].upper()}\t{manifestFile[head[j]][i]}\n')
 
-            webin.webin_submission(manifest , args, webin_cli, manifestFile['SAMPLE'][i], 'genome')
+                webin.webin_submission(manifest , args, webin_cli, manifestFile['SAMPLE'][i], args.context)
+
+    def targeted_submission(result_directory,args, webin_cli):
+        try:
+            manifestFile = pd.read_csv (args.manifestFile, sep='\t')
+        except Exception as e:
+            print(f"\033[91mError: reading file {args.manifestFile}.\033[0m\nException: {e}")
+            sys.exit() 
+        head = [i for i in manifestFile]
+        for i in range(len(manifestFile['NAME'])):
+            if '#' not in manifestFile[head[0]][i]: 
+                if not pd.isna(manifestFile['NAME'][i]):
+                    manifest = os.path.join(result_directory, f"manifest_targeted_{manifestFile['NAME'][i]}.txt")
+                    with open(manifest , 'w') as file:
+                        for j in range(len(head)) : 
+                            if not pd.isna(manifestFile[head[j]][i]):
+                                file.write(f'{head[j].upper()}\t{manifestFile[head[j]][i]}\n')
+
+                webin.webin_submission(manifest , args, webin_cli, manifestFile['NAME'][i], 'sequence')
             
         

@@ -69,7 +69,6 @@ def get_args(): # https://docs.python.org/3/library/argparse.html
     mandatory_r.add_argument('-p', '--password', type=str, help='Password for the submission account', required=True)
     mandatory_r.add_argument('-m', '--manifestFile', type=str, help='run manifest file (template: packages/run_template.txt - tab file)', required=True)
     mandatory_r.add_argument('-i', '--inputDir', type=str, help=' input directory for files declared in manifest file', required=True)
-    mandatory_r.add_argument('-c', '--context', choices=['genome','transcriptome','sequence','reads'], help=' the submission type', required=True)
     
 
     #### Optional arguments
@@ -78,13 +77,14 @@ def get_args(): # https://docs.python.org/3/library/argparse.html
     optional_r.add_argument('-t', '--test', action='store_true', help='use Webin test service instead of the production service. Please note that the Webin upload area is shared between test and production services, and that test submission files will not be archived. (Optional)')
     
     # 4. Genome Assemblies 
-    Genome = subparsers.add_parser('genome', help='Submitting Genome Assemblies of Individuals or Cultured Isolates',epilog=epilog)
+    Genome = subparsers.add_parser('genome', help='Submitting Genome Assemblies of Individuals or Cultured Isolates - Metagenome Assemblies - Environmental Single-Cell Amplified Genomes - Transcriptome Assemblies - Metatranscriptome Assemblies',epilog=epilog)
     #### Required arguments
     mandatory_g = Genome.add_argument_group('\033[93mMandatory arguments\033[0m')
     mandatory_g.add_argument('-u', '--username', type=str, help='Webin submission account (e.g., Webin-XXX)', required=True)
     mandatory_g.add_argument('-p', '--password', type=str, help='Password for the submission account', required=True)
     mandatory_g.add_argument('-m', '--manifestFile', type=str, help='run manifest file (template: packages/run_template.txt - tab file)', required=True)
     mandatory_g.add_argument('-i', '--inputDir', type=str, help=' input directory for files declared in manifest file', required=True)
+    mandatory_g.add_argument('-c', '--context', choices=['genome','transcriptome'], help=' the assembly submission type', required=True)
     
 
     #### Optional arguments
@@ -92,8 +92,23 @@ def get_args(): # https://docs.python.org/3/library/argparse.html
     optional_g.add_argument('-C', '--centerName', type=str, help=' the center name of the submitter (mandatory for broker accounts).')
     optional_g.add_argument('-t', '--test', action='store_true', help='use Webin test service instead of the production service. Please note that the Webin upload area is shared between test and production services, and that test submission files will not be archived. (Optional)')
     
+    # 5. Submit Targeted Sequences
+    Targeted = subparsers.add_parser('targeted', help='Submit Targeted Sequences',epilog=epilog)
     
-    # 5. antibiograms submission
+    #### Required arguments
+    mandatory_t = Targeted.add_argument_group('\033[93mMandatory arguments\033[0m')
+    mandatory_t.add_argument('-u', '--username', type=str, help='Webin submission account (e.g., Webin-XXX)', required=True)
+    mandatory_t.add_argument('-p', '--password', type=str, help='Password for the submission account', required=True)
+    mandatory_t.add_argument('-m', '--manifestFile', type=str, help='run manifest file (template: packages/run_template.txt - tab file)', required=True)
+    
+
+    #### Optional arguments
+    optional_t = Targeted.add_argument_group('\033[93mOptional arguments\033[0m')
+    optional_t.add_argument('-C', '--centerName', type=str, help=' the center name of the submitter (mandatory for broker accounts).')
+    optional_t.add_argument('-t', '--test', action='store_true', help='use Webin test service instead of the production service. Please note that the Webin upload area is shared between test and production services, and that test submission files will not be archived. (Optional)')
+
+    
+    # 6. antibiograms submission
     antibiograms = subparsers.add_parser('antibiogram', help='Register an Antibiogram',epilog=epilog)
     
     #### Required arguments
@@ -144,6 +159,9 @@ def process():
 
     elif args.subcommand == 'genome':
         webin.genome_submission(result_directory, args  , webin_cli)
+
+    elif args.subcommand == 'targeted':
+        webin.targeted_submission(result_directory, args  , webin_cli)
         
     elif args.subcommand == 'antibiogram':
         try:
