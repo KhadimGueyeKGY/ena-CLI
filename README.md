@@ -32,7 +32,7 @@ python ena-CLI.py sample -h
 
 ### Exemple
 ```
-python ena-CLI.py sample -u Webin-XXXX -p 'XXXXXX' -m packages/sample_spreadsheet.tsv -t
+python ena-CLI.py sample -u Webin-XXXX -p 'XXXXXX' -m templates/sample_template.tsv -t
 ```
 
 ## 3. Run Submission
@@ -47,10 +47,22 @@ python ena-CLI.py run -h
 
 ### Exemple
 ```
-python ena-CLI.py run -u Webin-XXXX -p 'XXXXXX' -m packages/run_template.tsv -i test_data -c reads -t
+python ena-CLI.py run -u Webin-XXXX -p 'XXXXXX' -m templates/run_template.tsv -i test_data/run -c reads -t
 ```
 
-## 4. Analysis Submission 
+## 4. Genome Assembly Submissions 
+### Usage
+
+#### Help
+
+```
+python ena-CLI.py genome -h 
+```
+
+### Exemple
+```
+python ena-CLI.py genome -u Webin-XXXX -p 'XXXXXX' -m templates/genome_template.tsv -i test_data/genome -t
+```
 
 ## 5. Antibiogram Submission
 
@@ -81,7 +93,7 @@ python ena-CLI.py antibiogram -h
 
 #### Example
 ```
-python ena-CLI.py antibiogram -u Webin-XXX -p PASSWORD -f antibiogram.txt -S PRJEBXXXX -s ERSXXX -a alias  -T 'my title'  -d  'This is a short description' -t
+python ena-CLI.py antibiogram -u Webin-XXX -p PASSWORD -f templates/antibiogram_template.txt -S PRJEBXXXX -s ERSXXX -a alias  -T 'my title'  -d  'This is a short description' -t
 ```
 
 The options -u, -p, -f, -S, -s, and -a are mandatory.

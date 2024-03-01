@@ -1,0 +1,4 @@
+STUDY	SAMPLE	RUN_REF	ASSEMBLYNAME	ASSEMBLY_TYPE	COVERAGE	PROGRAM	PLATFORM	MINGAPLENGTH	MOLECULETYPE	DESCRIPTION	FASTA	FLATFILE	AGP	CHROMOSOME_LIST	UNLOCALISED_LIST
+PRJEB72880	ERS18379758	ERR12717068	hCoV-19_isolate_1	COVID-19 outbreak	100	ARTIC fieldbioinformatics (minimap2/nanopolish) 1.1.3 (nanopolish 0.13.2)	ILLUMINA	3	genomic RNA	this is a test submission	hCoV-19_isolate_1.fasta.gz			hCoV-19_isolate_1_chrm_list.txt.gz	
+PRJEB72880	ERS18379757	ERR12717066	hCoV-19_isolate_2	COVID-19 outbreak	100	ARTIC fieldbioinformatics (minimap2/nanopolish) 1.1.3 (nanopolish 0.13.2)	ILLUMINA	3	genomic RNA	this is a test submission	hCoV-19_isolate_2.fasta.gz			hCoV-19_isolate_2_chrm_list.txt.gz	
+PRJEB72880	ERS18379756	ERR12717065	hCoV-19_isolate_3	COVID-19 outbreak	100	ARTIC fieldbioinformatics (minimap2/nanopolish) 1.1.3 (nanopolish 0.13.2)	ILLUMINA	3	genomic RNA	this is a test submission	hCoV-19_isolate_3.fasta.gz			hCoV-19_isolate_3_chrm_list.txt.gz	
