@@ -10,7 +10,7 @@ pip install argparse pandas lxml
 ```
 
 ## File Upload Reminder
-Before using the ENA-CLI for submission, ensure you have uploaded your files to ENA using the Webin file uploader. Detailed instructions on how to upload files can be found [here](https://ena-docs.readthedocs.io/en/latest/submit/fileprep/upload.html#uploading-files-to-ena).
+Before using the ENA-CLI for other submission (5), ensure you have uploaded your files to ENA using the Webin file uploader. Detailed instructions on how to upload files can be found [here](https://ena-docs.readthedocs.io/en/latest/submit/fileprep/upload.html#uploading-files-to-ena).
 
 ## Usage
 
