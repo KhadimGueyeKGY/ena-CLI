@@ -1,0 +1,36 @@
+<SUBMISSION_SET>
+  <SUBMISSION>
+    <ACTIONS>
+      <ACTION>
+        <ADD />
+      </ACTION>
+    </ACTIONS>
+    <SUBMISSION_ATTRIBUTES>
+      <SUBMISSION_ATTRIBUTE>
+        <TAG>ENA-SUBMISSION-TOOL</TAG>
+        <VALUE>WebinCli:7.0.1</VALUE>
+      </SUBMISSION_ATTRIBUTE>
+      <SUBMISSION_ATTRIBUTE>
+        <TAG>ENA-MANIFEST-FILE</TAG>
+        <VALUE><![CDATA[SAMPLE	SARS Sample_1
+STUDY	PRJEB72880
+NAME	SARS-CoV-2 sample 7 reads
+PLATFORM	ILLUMINA
+INSTRUMENT	Illumina NovaSeq 6000
+INSERT_SIZE	350
+LIBRARY_NAME	SARS-CoV-2 library 1
+LIBRARY_SOURCE	VIRAL RNA
+LIBRARY_SELECTION	RANDOM
+LIBRARY_STRATEGY	WGS
+LIBRARY_CONSTRUCTION_PROTOCOL	Test_protocol
+DESCRIPTION	Amplicons were cleaned-up with AMPure XP beads (Beckman Coulter) with a 1:1 ratio and amplicon concentrations were quantified with the Qubit Fluorometric Quantitation system (Life Technologies)
+FASTQ	SARS-CoV-2-Sample1_1.fastq.gz
+FASTQ	SARS-CoV-2-Sample1_2.fastq.gz]]></VALUE>
+      </SUBMISSION_ATTRIBUTE>
+      <SUBMISSION_ATTRIBUTE>
+        <TAG>ENA-MANIFEST-FILE-MD5</TAG>
+        <VALUE>02a9eefc8c9ebec2bfe0e0c0c36de1d9</VALUE>
+      </SUBMISSION_ATTRIBUTE>
+    </SUBMISSION_ATTRIBUTES>
+  </SUBMISSION>
+</SUBMISSION_SET>

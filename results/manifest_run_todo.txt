@@ -1,0 +1,5 @@
+STUDY	PRJEB72880
+NAME	todo
+DESCRIPTION	your decription
+FLATFILE	filename2.embl.gz
+TAB	filename2.tsv.gz

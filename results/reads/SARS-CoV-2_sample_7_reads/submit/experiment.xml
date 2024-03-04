@@ -1,0 +1,25 @@
+<EXPERIMENT_SET>
+  <EXPERIMENT alias="webin-reads-SARS-CoV-2_sample_7_reads">
+    <TITLE>Raw reads: SARS-CoV-2_sample_7_reads</TITLE>
+    <STUDY_REF accession="PRJEB72880" />
+    <DESIGN>
+      <DESIGN_DESCRIPTION>Amplicons were cleaned-up with AMPure XP beads (Beckman Coulter) with a 1:1 ratio and amplicon concentrations were quantified with the Qubit Fluorometric Quantitation system (Life Technologies)</DESIGN_DESCRIPTION>
+      <SAMPLE_DESCRIPTOR accession="SAMEA130850923" />
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>SARS-CoV-2 library 1</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>VIRAL RNA</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="350" />
+        </LIBRARY_LAYOUT>
+        <LIBRARY_CONSTRUCTION_PROTOCOL>Test_protocol</LIBRARY_CONSTRUCTION_PROTOCOL>
+      </LIBRARY_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina NovaSeq 6000</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+  </EXPERIMENT>
+</EXPERIMENT_SET>

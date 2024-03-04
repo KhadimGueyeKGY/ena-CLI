@@ -6,6 +6,7 @@ from packages.XMLGenerator import XML_generator
 from packages.submission import submission
 from packages.antibiogram import validation
 from packages.webin import webin
+from others.XMLGenerator import XMLGenerator
 
 # color https://gist.github.com/Prakasaka/219fe5695beeb4d6311583e79933a009
 
@@ -35,19 +36,12 @@ def get_args(): # https://docs.python.org/3/library/argparse.html
     mandatory_p = project.add_argument_group('\033[93mMandatory arguments\033[0m')
     mandatory_p.add_argument('-u', '--username', type=str, help='Webin submission account (e.g., Webin-XXX)', required=True)
     mandatory_p.add_argument('-p', '--password', type=str, help='Password for the submission account', required=True)
-    mandatory_p.add_argument('-a', '--alias', type=str, help='Project alias', required=True)
-    mandatory_p.add_argument('-D', '--Date', type=str, help='Release data (e.g., 2025-01-12 )', required=True)
-    mandatory_p.add_argument('-d', '--description', type=str, help='Detailed study abstract. Use single quotes to provide the description, e.g., \'My Description\'', required=True)
-    mandatory_p.add_argument('-T', '--Title', type=str, help='Short description study title. Use single quotes to provide the title, e.g., \'My Title\'', required=True)
+    mandatory_p.add_argument('-m', '--manifestFile', type=str, help='Manifest file (template: templates/templates.xlsx)', required=True)
 
     ##### Optional arguments
     optional_p = project.add_argument_group('\033[93mOptional arguments\033[0m')
-    optional_p.add_argument('-n', '--name', type=str, default='', help='Study name (Optional)', required=False)
-    optional_p.add_argument('-L', '--LocusTag', type=str, help='Locus Tag Prefix Registration (Optional)', required=False)
-    optional_p.add_argument('-P', '--PubMed', type=str, help='PubMed Citations Registration (Optional)', required=False)
-    optional_p.add_argument('-St', '--StudyAttributesTag', type=str, help='Study Attributes Tag Registration (Optional)', required=False)
-    optional_p.add_argument('-Sv', '--StudyAttributesValue', type=str, help='Study Attributes Value Registration (Optional)', required=False)
     optional_p.add_argument('-t', '--test', action='store_true', help='use Webin test service instead of the production service. Please note that the Webin upload area is shared between test and production services, and that test submission files will not be archived. (Optional)')
+    
     
     # 2. Sample submission
     sample = subparsers.add_parser('sample', help='Register samples',epilog=epilog)
@@ -55,7 +49,7 @@ def get_args(): # https://docs.python.org/3/library/argparse.html
     mandatory_s = sample.add_argument_group('\033[93mMandatory arguments\033[0m')
     mandatory_s.add_argument('-u', '--username', type=str, help='Webin submission account (e.g., Webin-XXX)', required=True)
     mandatory_s.add_argument('-p', '--password', type=str, help='Password for the submission account', required=True)
-    mandatory_s.add_argument('-m', '--manifestFile', type=str, help='Sample manifest file (template on: \033[94mhttps://www.ebi.ac.uk/ena/browser/checklist\033[0m)', required=True)
+    mandatory_s.add_argument('-m', '--manifestFile', type=str, help='Manifest file (template: templates/templates.xlsx) - Sample manifest file (template on: \033[94mhttps://www.ebi.ac.uk/ena/browser/checklist\033[0m)', required=True)
 
     #### Optional arguments
     optional_s = sample.add_argument_group('\033[93mOptional arguments\033[0m')
@@ -67,7 +61,7 @@ def get_args(): # https://docs.python.org/3/library/argparse.html
     mandatory_r = run.add_argument_group('\033[93mMandatory arguments\033[0m')
     mandatory_r.add_argument('-u', '--username', type=str, help='Webin submission account (e.g., Webin-XXX)', required=True)
     mandatory_r.add_argument('-p', '--password', type=str, help='Password for the submission account', required=True)
-    mandatory_r.add_argument('-m', '--manifestFile', type=str, help='run manifest file (template: packages/run_template.txt - tab file)', required=True)
+    mandatory_r.add_argument('-m', '--manifestFile', type=str, help='Manifest file (template: templates/templates.xlsx)', required=True)
     mandatory_r.add_argument('-i', '--inputDir', type=str, help=' input directory for files declared in manifest file', required=True)
     
 
@@ -82,7 +76,7 @@ def get_args(): # https://docs.python.org/3/library/argparse.html
     mandatory_g = Genome.add_argument_group('\033[93mMandatory arguments\033[0m')
     mandatory_g.add_argument('-u', '--username', type=str, help='Webin submission account (e.g., Webin-XXX)', required=True)
     mandatory_g.add_argument('-p', '--password', type=str, help='Password for the submission account', required=True)
-    mandatory_g.add_argument('-m', '--manifestFile', type=str, help='run manifest file (template: packages/run_template.txt - tab file)', required=True)
+    mandatory_g.add_argument('-m', '--manifestFile', type=str, help='Manifest file (template: templates/templates.xlsx)', required=True)
     mandatory_g.add_argument('-i', '--inputDir', type=str, help=' input directory for files declared in manifest file', required=True)
     mandatory_g.add_argument('-c', '--context', choices=['genome','transcriptome'], help=' the assembly submission type', required=True)
     
@@ -99,7 +93,7 @@ def get_args(): # https://docs.python.org/3/library/argparse.html
     mandatory_t = Targeted.add_argument_group('\033[93mMandatory arguments\033[0m')
     mandatory_t.add_argument('-u', '--username', type=str, help='Webin submission account (e.g., Webin-XXX)', required=True)
     mandatory_t.add_argument('-p', '--password', type=str, help='Password for the submission account', required=True)
-    mandatory_t.add_argument('-m', '--manifestFile', type=str, help='run manifest file (template: packages/run_template.txt - tab file)', required=True)
+    mandatory_t.add_argument('-m', '--manifestFile', type=str, help='Manifest file (template: templates/templates.xlsx)', required=True)
     
 
     #### Optional arguments
@@ -107,25 +101,22 @@ def get_args(): # https://docs.python.org/3/library/argparse.html
     optional_t.add_argument('-C', '--centerName', type=str, help=' the center name of the submitter (mandatory for broker accounts).')
     optional_t.add_argument('-t', '--test', action='store_true', help='use Webin test service instead of the production service. Please note that the Webin upload area is shared between test and production services, and that test submission files will not be archived. (Optional)')
 
-    
-    # 6. antibiograms submission
-    antibiograms = subparsers.add_parser('antibiogram', help='Register an Antibiogram',epilog=epilog)
+    # 6. Other Analyses
+    # 7. antibiograms submission
+    Other = subparsers.add_parser('other', help='Submit Other Analyses',epilog=epilog)
     
     #### Required arguments
-    mandatory = antibiograms.add_argument_group('\033[93mMandatory arguments\033[0m')
-    mandatory.add_argument('-u', '--username', type=str, help='Webin submission account (e.g., Webin-XXX)', required=True)
-    mandatory.add_argument('-p', '--password', type=str, help='Password for the submission account', required=True)
-    mandatory.add_argument('-f', '--filename', type=str, help='Name of the AMR antibiogram file', required=True)
-    mandatory.add_argument('-S', '--Study', type=str, help='Study ID (e.g., PRJEBXXX) to add the antibiograms', required=True)
-    mandatory.add_argument('-s', '--sample', type=str, help='Sample ID (e.g., ERSXXXX) to add the antibiograms', required=True)
-    mandatory.add_argument('-a', '--alias', type=str, help='Analysis alias to add the antibiograms', required=True)
+    mandatory_o = Other.add_argument_group('\033[93mMandatory arguments\033[0m')
+    mandatory_o.add_argument('-u', '--username', type=str, help='Webin submission account (e.g., Webin-XXX)', required=True)
+    mandatory_o.add_argument('-p', '--password', type=str, help='Password for the submission account', required=True)
+    mandatory_o.add_argument('-m', '--manifestFile', type=str, help='Manifest file (template: templates/templates.xlsx)', required=True)
+    mandatory_o.add_argument('-a', '--analysisType', choices=['GENOME_MAP','REFERENCE_ALIGNMENT','SEQUENCE_ANNOTATION','ASSEMBLY_GRAPH','PROCESSED_READ','PATHOGEN_ANALYSIS','AMR_ANTIBIOGRAM','COVID-19_FILTERED_VCF','COVID-19_CONSENSUS','PHYLOGENY_ANALYSIS'], help='The analysis type is provided in the XML itself. It must be one of the following', required=True)
+    mandatory_o.add_argument('-i', '--inputDir', type=str, help=' input directory for files declared in manifest file', required=True)
+
 
     #### Optional arguments
-    optional = antibiograms.add_argument_group('\033[93mOptional arguments\033[0m')
-    optional.add_argument('-T', '--Title', type=str, help='Title of the submission (Optional). Use single quotes to provide the title, e.g., \'My Title\'')
-    optional.add_argument('-d', '--description', type=str, help='Description of the submission (Optional). Use single quotes to provide the description, e.g., \'My Description\'')
-    optional.add_argument('-t', '--test', action='store_true', help='use Webin test service instead of the production service. Please note that the Webin upload area is shared between test and production services, and that test submission files will not be archived. (Optional)')
-
+    optional_o = Other.add_argument_group('\033[93mOptional arguments\033[0m')
+    optional_o.add_argument('-t', '--test', action='store_true', help='use Webin test service instead of the production service. Please note that the Webin upload area is shared between test and production services, and that test submission files will not be archived. (Optional)')
     
     #args = parser.parse_args()
     # Add version argument
@@ -162,22 +153,12 @@ def process():
 
     elif args.subcommand == 'targeted':
         webin.targeted_submission(result_directory, args  , webin_cli)
-        
-    elif args.subcommand == 'antibiogram':
-        try:
-            antibiogram_file = pd.read_csv (args.filename, sep='\t')
-        except Exception as e:
-            print(f"\033[91mError: reading file {args.filename}.\033[0m\nException: {e}")
-            sys.exit() 
-        
-        validation.validate_biosample_id(antibiogram_file['bioSample_ID'])
-        validation.validate_antibiotic_name (antibiogram_file['antibiotic_name'])
-        validation.validate_ast_standard(antibiogram_file['ast_standard'])
-        validation.validate_resistance_phenotype(antibiogram_file['resistance_phenotype'])
-    
-        submission_file = XML_generator.build_submission_xml(result_directory)
-        submission_set_file = XML_generator.antibiogram_generate_set_xml (result_directory, args)
+
+    elif args.subcommand == 'other':
+        submission_file = XML_generator.build_submission_xml(args.inputDir)
+        submission_set_file= XMLGenerator.other_submission(result_directory, args )
         submission.submit_to_ENA(submission_file , submission_set_file, args , 'ANALYSIS')
+        
 
     print(f"\033[93m\n\n-------[ done ]-------\033[0m")
     print(f"\033[94mFor any error or assistance please contact the ENA helpdesk: https://www.ebi.ac.uk/ena/browser/support \n\n\033[0m")

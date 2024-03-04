@@ -1,0 +1,4 @@
+STUDY	NAME	DESCRIPTION	FLATFILE	TAB
+ # a study accession - mandatory	 a unique name for the submission - mandatory	 free-text describing the submitted sequences - optional	 name of a flat file containing sequences	 name of a spreadsheet containing sequences
+PRJEB72880	todo1	your decription		filename1.tsv.gz
+PRJEB72880	todo2	your decription	filename2.embl.gz	

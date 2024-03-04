@@ -1,112 +1,129 @@
-# ENA-CLI (ongoing)
+# ENA-CLI
 
-#### Help
-To learn how to use this script, type:
-```
-python ena-CLI.py
-```
-or 
-```
-python ena-CLI.py -h 
-```
+## Introduction
+ENA-CLI is a command-line tool designed to facilitate the validation and submission of data to the European Nucleotide Archive (ENA). This tool streamlines the process of preparing and uploading data files, ensuring they meet ENA's submission requirements.
 
-## 1. Prject Submission
-
-### Usage
-
-#### Help
-
-```
-python ena-CLI.py project -h 
-```
-
-## 2. Sample Submission
-
-### Usage
-
-#### Help
-
-```
-python ena-CLI.py sample -h 
-```
-
-### Exemple
-```
-python ena-CLI.py sample -u Webin-XXXX -p 'XXXXXX' -m templates/sample_template.tsv -t
-```
-
-## 3. Run Submission
-
-### Usage
-
-#### Help
-
-```
-python ena-CLI.py run -h 
-```
-
-### Exemple
-```
-python ena-CLI.py run -u Webin-XXXX -p 'XXXXXX' -m templates/run_template.tsv -i test_data/run -c reads -t
-```
-
-## 4. Genome Assembly Submissions 
-### Usage
-
-#### Help
-
-```
-python ena-CLI.py genome -h 
-```
-
-### Exemple
-```
-python ena-CLI.py genome -u Webin-XXXX -p 'XXXXXX' -m templates/genome_template.tsv -i test_data/genome -t
-```
-
-## 5. Antibiogram Submission
-
-This script allows validation and submission of Antibiograms to ENA. It should be noted that there are two servers on ENA: [test](https://wwwdev.ebi.ac.uk/ena/submit/webin/login) and [production](https://www.ebi.ac.uk/ena/submit/webin/login). Data submitted to the test server will be removed after 24 hours.
-
-### Prerequisites
+## Prerequisites
+Ensure you have the following dependencies installed:
 ```
 pip install argparse pandas lxml
 ```
 
-### Upload Your File
+## File Upload Reminder
+Before using the ENA-CLI for submission, ensure you have uploaded your files to ENA using the Webin file uploader. Detailed instructions on how to upload files can be found [here](https://ena-docs.readthedocs.io/en/latest/submit/fileprep/upload.html#uploading-files-to-ena).
 
-You must upload your file before using the script. You can upload your Antibiogram file using the Webin file uploader. [link for more information](https://ena-docs.readthedocs.io/en/latest/submit/fileprep/upload.html#uploading-files-to-ena).  
-See the template at: ```packages/template.txt```
-### Process
+## Usage
 
-Before submitting your Antibiogram, please ensure that you have submitted:
-1. Project: [link for more information](https://ena-docs.readthedocs.io/en/latest/submit/study.html)
-2. Sample: [link for more information](https://ena-docs.readthedocs.io/en/latest/submit/samples.html)
+### 1. Project Submission
 
-### Usage
-
-#### Help
-
+#### Usage
 ```
-python ena-CLI.py antibiogram -h 
+python ena-CLI.py project -h
 ```
 
 #### Example
 ```
-python ena-CLI.py antibiogram -u Webin-XXX -p PASSWORD -f templates/antibiogram_template.txt -S PRJEBXXXX -s ERSXXX -a alias  -T 'my title'  -d  'This is a short description' -t
+python ena-CLI.py project -u Webin-XXXX -p 'XXXXXX' -m templates/templates.xlsx -t
 ```
 
-The options -u, -p, -f, -S, -s, and -a are mandatory.
-1. -u indicates the Webin submission account.
-2. -p indicates the password for your Webin submission account.
-3. -f indicates your Antigram file. This must be tab-separated.
-4. -S indicates the project to which you want to link your submission and must be in the format PRJEBXXXX.
-5. -s indicates the sample to which you want to link your submission and must be in the format ERSXXX.
+#### Options
+- `-u`: Webin submission account
+- `-p`: Password for the submission account
+- `-m`: Manifest file (template: templates/templates.xlsx)
+- `-t`: Use Webin test service (optional)
 
-The options -T, -d, and -t are optional.
-1. -T indicates the title of your submission. Please enclose your title in single quotes if you use spaces or special characters.
-2. -d indicates a description of your submission. Please enclose your description in single quotes if you use spaces or special characters.
-3. -t indicates that you are submitting your antibiogram as a test and it will be removed after 24 hours. Otherwise, it will be submitted directly to the production server.
+### 2. Sample Submission
 
+#### Usage
+```
+python ena-CLI.py sample -h
+```
 
-**For any error or assistance please contact the [ENA helpdesk](https://www.ebi.ac.uk/ena/browser/support)**
+#### Example
+```
+python ena-CLI.py sample -u Webin-XXXX -p 'XXXXXX' -m templates/templates.xlsx -t
+```
+
+#### Options
+- `-u`: Webin submission account
+- `-p`: Password for the submission account
+- `-m`: Manifest file (template: templates/templates.xlsx)
+- `-t`: Use Webin test service (optional)
+
+### 3. Run Submission
+
+#### Usage
+```
+python ena-CLI.py run -h
+```
+
+#### Example
+```
+python ena-CLI.py run -u Webin-XXXX -p 'XXXXXX' -m templates/templates.xlsx -i test_data/run -t
+```
+
+#### Options
+- `-u`: Webin submission account
+- `-p`: Password for the submission account
+- `-m`: Manifest file (template: templates/templates.xlsx)
+- `-i`: Input directory for files declared in the manifest file
+- `-C`: Center name of the submitter (optional)
+- `-t`: Use Webin test service (optional)
+
+### 4. Genome Assembly Submissions
+
+#### Usage
+```
+python ena-CLI.py genome -h
+```
+
+#### Example
+```
+python ena-CLI.py genome -u Webin-XXXX -p 'XXXXXX' -m templates/templates.xlsx -i test_data/genome -c genome -t
+```
+
+#### Options
+- `-u`: Webin submission account
+- `-p`: Password for the submission account
+- `-m`: Manifest file (template: templates/templates.xlsx)
+- `-i`: Input directory for files declared in the manifest file
+- `-c`: Assembly submission type (choices: genome, transcriptome)
+- `-C`: Center name of the submitter (optional)
+- `-t`: Use Webin test service (optional)
+
+### 5. Other Submission
+
+#### Usage
+```
+python ena-CLI.py other -h
+```
+
+#### Example
+```
+python ena-CLI.py other -u Webin-XXXX -p 'XXXXXX' -m templates/templates.xlsx -i test_data/ -a AMR_ANTIBIOGRAM -t
+```
+
+#### Options
+- `-u`: Webin submission account
+- `-p`: Password for the submission account
+- `-m`: Manifest file (template: templates/templates.xlsx)
+- `-i`: Input directory for files declared in the manifest file
+- `-a`: Analysis type (choices: GENOME_MAP, REFERENCE_ALIGNMENT, SEQUENCE_ANNOTATION, ASSEMBLY_GRAPH, PROCESSED_READ, PATHOGEN_ANALYSIS, AMR_ANTIBIOGRAM, COVID-19_FILTERED_VCF, COVID-19_CONSENSUS, PHYLOGENY_ANALYSIS)
+- `-C`: Center name of the submitter (optional)
+- `-t`: Use Webin test service (optional)
+
+## Options Explanation
+
+### Mandatory Options
+- `-u`: Webin submission account: Indicates the Webin submission account.
+- `-p`: Password: Indicates the password for the Webin submission account.
+- `-m`: Manifest file: Specifies the path to the manifest file.
+- `-a`: Analysis type: Specifies the type of analysis provided in the XML.
+- `-c`: Assembly submission type: Specifies the type of assembly submission.
+
+### Optional Options
+- `-C`: Center name: Specifies the center name of the submitter.
+- `-t`: Test submission: Submits the data as a test (optional).
+
+## Contact Information
+For any errors or assistance, please contact the [ENA helpdesk](https://www.ebi.ac.uk/ena/browser/support).

@@ -39,7 +39,7 @@ class webin:
         
     def run_submission(result_directory,args, webin_cli):
         try:
-            manifestFile = pd.read_csv (args.manifestFile, sep='\t', header = 1)
+            manifestFile = pd.read_excel(args.manifestFile, sheet_name="run",header = 1)
         except Exception as e:
             print(f"\033[91mError: reading file {args.manifestFile}.\033[0m\nException: {e}")
             sys.exit() 
@@ -47,7 +47,11 @@ class webin:
         for i in range(len(manifestFile['sample'])):
             if '#' not in manifestFile[head[0]][i]:
                 if not pd.isna(manifestFile['sample'][i]):
-                    manifest = os.path.join(result_directory, f"manifest_run_{manifestFile['sample'][i]}.txt")
+                    if ' ' in manifestFile['sample'][i]:
+                        name = manifestFile['sample'][i].replace(' ','_')
+                    else: 
+                        name = manifestFile['sample'][i]
+                    manifest = os.path.join(result_directory, f"manifest_run_{name}.txt")
                     with open(manifest , 'w') as file:
                         for j in range(len(head)) : 
                             if not pd.isna(manifestFile[head[j]][i]):
@@ -55,6 +59,8 @@ class webin:
                                     #file_name = os.path.join('../',args.inputDir,manifestFile[head[j]][i])
                                     file_name = manifestFile[head[j]][i]
                                     file.write(f"FASTQ\t{file_name}\n")
+                                elif head[j].upper() == 'INSERT_SIZE':
+                                    file.write(f'{head[j].upper()}\t{int(manifestFile[head[j]][i])}\n')
                                 else:
                                     file.write(f'{head[j].upper()}\t{manifestFile[head[j]][i]}\n')
     
@@ -63,7 +69,7 @@ class webin:
     
     def genome_submission(result_directory,args, webin_cli):
         try:
-            manifestFile = pd.read_csv (args.manifestFile, sep='\t')
+            manifestFile = pd.read_excel(args.manifestFile, sheet_name="genome")
         except Exception as e:
             print(f"\033[91mError: reading file {args.manifestFile}.\033[0m\nException: {e}")
             sys.exit() 
@@ -81,7 +87,7 @@ class webin:
 
     def targeted_submission(result_directory,args, webin_cli):
         try:
-            manifestFile = pd.read_csv (args.manifestFile, sep='\t')
+            manifestFile = pd.read_excel(args.manifestFile, sheet_name="targeted")
         except Exception as e:
             print(f"\033[91mError: reading file {args.manifestFile}.\033[0m\nException: {e}")
             sys.exit() 

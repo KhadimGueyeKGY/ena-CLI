@@ -5,12 +5,19 @@ import sys
 import platform
 import shutil
 import pandas as pd
+from datetime import datetime
 
 class XML_generator:
     
     # ------------------Method to build the submission XML file
     def project_submission_xml(result_directory,args):
         # Create the root element
+        try:
+            manifestFile = pd.read_excel(args.manifestFile, sheet_name="project")
+        except Exception as e:
+            print(f"\033[91mError: reading file {args.manifestFile}.\033[0m\nException: {e}")
+            sys.exit() 
+            
         submission_set = etree.Element('SUBMISSION_SET')
         submission = etree.SubElement(submission_set, 'SUBMISSION')
         actions = etree.SubElement(submission, 'ACTIONS')
@@ -20,8 +27,13 @@ class XML_generator:
         add1 = etree.SubElement(action1, 'ADD') 
         
         # Create the second ACTION element with HOLD
-        action2 = etree.SubElement(actions, 'ACTION')
-        hold = etree.SubElement(action2, 'HOLD', HoldUntilDate=args.Date)
+        head = [i for i in manifestFile]
+        for i in range(len(manifestFile[head[0]])):
+            if '#' not in manifestFile[head[0]][i]:
+                if not pd.isna(manifestFile['date'][i]):
+                    action2 = etree.SubElement(actions, 'ACTION')
+                    formatted_date = manifestFile['date'][i].strftime('%Y-%m-%d')
+                    hold = etree.SubElement(action2, 'HOLD', HoldUntilDate=formatted_date)
     
         # Generate the XML string
         submission_xml = etree.tostring(submission_set, pretty_print=True, xml_declaration=True, encoding='UTF-8')
@@ -40,53 +52,62 @@ class XML_generator:
 
     #----------------- Method to build project XML file
     def generate_project_xml(result_directory,args):
+        try:
+            manifestFile = pd.read_excel(args.manifestFile, sheet_name="project")
+        except Exception as e:
+            print(f"\033[91mError: reading file {args.manifestFile}.\033[0m\nException: {e}")
+            sys.exit() 
         # Create the root element
         project_set = etree.Element('PROJECT_SET')
-        
-        # Create the PROJECT element
-        project = etree.SubElement(project_set, 'PROJECT', alias=args.alias)
-        
-        # Add the NAME element
-        name = etree.SubElement(project, 'NAME')
-        name.text = args.name
-        
-        # Add the TITLE element
-        title = etree.SubElement(project, 'TITLE')
-        title.text = args.Title
-        
-        # Add the DESCRIPTION element
-        description = etree.SubElement(project, 'DESCRIPTION')
-        description.text = args.description
-        
-        # Add the SUBMISSION_PROJECT element
-        submission_project = etree.SubElement(project, 'SUBMISSION_PROJECT')
-        sequencing_project = etree.SubElement(submission_project, 'SEQUENCING_PROJECT')
-        # Add the Locus_Tag element
-        if args.LocusTag and not args.test:
-            # Add the LOCUS_TAG_PREFIX element
-            locus_tag_prefix = etree.SubElement(sequencing_project, 'LOCUS_TAG_PREFIX')
-            locus_tag_prefix.text = args.LocusTag
-        elif args.LocusTag and args.test :
-            print(f"\033[91mError: Registration for Locus Tags is not permitted on the test server . \033[0m")
-        
-        # Add the PROJECT_LINKS element
-        if args.PubMed:
-            project_links = etree.SubElement(project, 'PROJECT_LINKS')
-            project_link = etree.SubElement(project_links, 'PROJECT_LINK')
-            xref_link = etree.SubElement(project_link, 'XREF_LINK')
-            db = etree.SubElement(xref_link, 'DB')
-            db.text = "PUBMED"
-            id_element = etree.SubElement(xref_link, 'ID')
-            id_element.text = args.PubMed
-        
-        # Add the PROJECT_ATTRIBUTE element
-        if args.StudyAttributesTag and args.StudyAttributesValue:
-            project_attribute = etree.SubElement(project, 'PROJECT_ATTRIBUTE')
-            tag = etree.SubElement(project_attribute, 'TAG')
-            tag.text = args.StudyAttributesTag
-            value = etree.SubElement(project_attribute, 'VALUE')
-            value.text = args.StudyAttributesValue
-        
+
+        head = [i for i in manifestFile]
+        for i in range(len(manifestFile[head[0]])):
+            if '#' not in manifestFile[head[0]][i]:
+                # Create the PROJECT element
+                project = etree.SubElement(project_set, 'PROJECT', alias=manifestFile['alias'][i])
+                
+                # Add the NAME element
+                if not pd.isna(manifestFile['name'][i]):
+                    name = etree.SubElement(project, 'NAME')
+                    name.text = manifestFile['name'][i]
+                
+                # Add the TITLE element
+                title = etree.SubElement(project, 'TITLE')
+                title.text = manifestFile['Title'][i]
+                
+                # Add the DESCRIPTION element
+                description = etree.SubElement(project, 'DESCRIPTION')
+                description.text = manifestFile['description'][i]
+                
+                # Add the SUBMISSION_PROJECT element
+                submission_project = etree.SubElement(project, 'SUBMISSION_PROJECT')
+                sequencing_project = etree.SubElement(submission_project, 'SEQUENCING_PROJECT')
+                # Add the Locus_Tag element
+                if not pd.isna(manifestFile['LocusTag'][i]) and not args.test:
+                    # Add the LOCUS_TAG_PREFIX element
+                    locus_tag_prefix = etree.SubElement(sequencing_project, 'LOCUS_TAG_PREFIX')
+                    locus_tag_prefix.text = manifestFile['LocusTag'][i]
+                elif not pd.isna(manifestFile['LocusTag'][i]) and args.test :
+                    print(f"\033[91mError: Registration for Locus Tags is not permitted on the test server . \033[0m")
+                
+                # Add the PROJECT_LINKS element
+                if not pd.isna(manifestFile['PubMed'][i]):
+                    project_links = etree.SubElement(project, 'PROJECT_LINKS')
+                    project_link = etree.SubElement(project_links, 'PROJECT_LINK')
+                    xref_link = etree.SubElement(project_link, 'XREF_LINK')
+                    db = etree.SubElement(xref_link, 'DB')
+                    db.text = "PUBMED"
+                    id_element = etree.SubElement(xref_link, 'ID')
+                    id_element.text = manifestFile['PubMed'][i]
+                
+                # Add the PROJECT_ATTRIBUTE element
+                if not pd.isna(manifestFile['Study Attributes Tag'][i]) and not pd.isna(manifestFile['Study Attributes Value'][i]):
+                    project_attribute = etree.SubElement(project, 'PROJECT_ATTRIBUTE')
+                    tag = etree.SubElement(project_attribute, 'TAG')
+                    tag.text = manifestFile['Study Attributes Tag'][i]
+                    value = etree.SubElement(project_attribute, 'VALUE')
+                    value.text = manifestFile['Study Attributes Value'][i]
+            
         # Specify the path for the submission XML file
         submission_file = os.path.join(result_directory, 'project.xml')
     
@@ -123,7 +144,7 @@ class XML_generator:
     def generate_sample_xml(result_directory, args):
         try:
             # Read the manifest file into a pandas DataFrame
-            manifest = pd.read_csv(args.manifestFile, sep='\t', header=1)
+            manifest = pd.read_excel(args.manifestFile, sheet_name="sample",header=1)
         except Exception as e:
             print(f"\033[91mError: Failed to read the manifest file {args.manifestFile}.\033[0m\nException: {e}")
             sys.exit() 
@@ -136,20 +157,20 @@ class XML_generator:
             # Check if the 'tax_id' value is not NaN
             if not pd.isna(manifest['tax_id'][i]):
                 # Ignore lines starting with '#'
-                if '#' not in manifest['tax_id'][i] :
+                if '#' not in str(manifest['tax_id'][i]) :
                     # Create a new 'SAMPLE' element
-                    sample = etree.SubElement(sample_set, 'SAMPLE', alias=manifest['sample_alias'][i])
+                    sample = etree.SubElement(sample_set, 'SAMPLE', alias=str(manifest['sample_alias'][i]))
                     
                     # Add 'TITLE' element to the sample
                     title = etree.SubElement(sample, 'TITLE')
-                    title.text = manifest['sample_title'][i]
+                    title.text = str(manifest['sample_title'][i])
                     
                     # Add 'SAMPLE_NAME' element to the sample
                     sample_name = etree.SubElement(sample, 'SAMPLE_NAME')
                     taxon_id = etree.SubElement(sample_name, 'TAXON_ID')
-                    taxon_id.text = manifest['tax_id'][i]
+                    taxon_id.text = str(manifest['tax_id'][i])
                     scientific_name = etree.SubElement(sample_name, 'SCIENTIFIC_NAME')
-                    scientific_name.text = manifest['scientific_name'][i]
+                    scientific_name.text = str(manifest['scientific_name'][i])
                     
                     # Add 'SAMPLE_ATTRIBUTES' element to the sample
                     sample_attributes = etree.SubElement(sample, 'SAMPLE_ATTRIBUTES')
@@ -157,11 +178,12 @@ class XML_generator:
                     tag = etree.SubElement(sample_attribute, 'TAG')
                     tag.text = "ENA-CHECKLIST"
                     value = etree.SubElement(sample_attribute, 'VALUE')
-                    with open(args.manifestFile, 'r') as f:
-                        line = f.read().split('\n')[0].split('\t')
-                        for e in line:
-                            if 'ERC' in e:
-                                value.text = e
+
+                    manifestFile = pd.read_excel(args.manifestFile, sheet_name="sample")
+                    manifestFile_head = [h for h in manifestFile]
+                    for e in manifestFile_head:
+                        if 'ERC' in e:
+                            value.text = e
                                 
                     # Add 'SAMPLE_ATTRIBUTE' elements to the sample for each attribute in the manifest
                     head = [h for h in manifest]
@@ -171,7 +193,10 @@ class XML_generator:
                             tag = etree.SubElement(sample_attribute, 'TAG')
                             tag.text = head[j]
                             value = etree.SubElement(sample_attribute, 'VALUE')
-                            value.text = str(manifest[head[j]][i])
+                            if head[j] in ['collection date','receipt date'] :
+                                value.text = manifest[head[j]][i].strftime('%Y-%m-%d')
+                            else: 
+                                value.text = str(manifest[head[j]][i])
                             if head[j] in ['geographic location (latitude)','geographic location (longitude)']:
                                 units = etree.SubElement(sample_attribute, 'UNITS')
                                 units.text = 'DD'

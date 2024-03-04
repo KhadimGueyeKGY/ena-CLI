@@ -1,0 +1,67 @@
+2024-03-04T14:49:02 INFO : GETing https://wwwdev.ebi.ac.uk/biosamples/v2/samples/SAMEA130850923
+2024-03-04T14:49:02 INFO : Expiry of JWT is : Mon Mar 04 19:49:02 GMT 2024
+2024-03-04T14:49:02 INFO : Refresh set to : Mon Mar 04 18:49:02 GMT 2024
+2024-03-04T14:49:02 INFO : jwt = Optional[eyJhbGciOiJSUzI1NiJ9.eyJwcmluY2lwbGUiOiJXZWJpbi02MzAwOCIsInJvbGUiOltdLCJleHAiOjE3MDk1ODE3NDIsImlhdCI6MTcwOTU2Mzc0Mn0.y4O_Wt1a2ZAh7-s6vapseHKDfQjxGdnhUEUt5MFWd6Zin5z1te0qYi1tjX-2XO-AfWK0D1jMB07-f98rvMr376_2FZFM11uSlDWjvPbnh5kTXj8W0mdG6212lUn1qu4KkboMqRudBqVXu6gFbDXURlVsk8nPcMCGGq8PA12UzybupUWMVcHI98OmsRS6MIVVcnl9u1NrkfLB0Y8Ha3MnkU7apYq8qOo5vifP97ZtyzAyZ8Plcf6AzloczkAzAynNJr7MJWdSwBA9Dl4COaA2kfqE1NKE-jkpR9D_D4p8Mc6wIEiG7_QpCm9htacqjVh_Wor2nfpJfzCWitzKMlxa1Q]
+2024-03-04T14:49:03 INFO : Submission has not been validated previously.
+2024-03-04T14:49:03 INFO : Processing file /mnt/c/Users/Dell/OneDrive - emblebi/EBI/work/ena-CLI/test_data/run/SARS-CoV-2-Sample1_1.fastq.gz
+2024-03-04T14:49:03 INFO : Collected 5 reads [file: /mnt/c/Users/Dell/OneDrive - emblebi/EBI/work/ena-CLI/test_data/run/SARS-CoV-2-Sample1_1.fastq.gz]
+2024-03-04T14:49:03 INFO : Collected 1 read labels: [1] [file: /mnt/c/Users/Dell/OneDrive - emblebi/EBI/work/ena-CLI/test_data/run/SARS-CoV-2-Sample1_1.fastq.gz]
+2024-03-04T14:49:03 INFO : Has possible duplicate read name(s): false [file: /mnt/c/Users/Dell/OneDrive - emblebi/EBI/work/ena-CLI/test_data/run/SARS-CoV-2-Sample1_1.fastq.gz]
+2024-03-04T14:49:03 INFO : Processing file /mnt/c/Users/Dell/OneDrive - emblebi/EBI/work/ena-CLI/test_data/run/SARS-CoV-2-Sample1_2.fastq.gz
+2024-03-04T14:49:03 INFO : Collected 5 reads [file: /mnt/c/Users/Dell/OneDrive - emblebi/EBI/work/ena-CLI/test_data/run/SARS-CoV-2-Sample1_2.fastq.gz]
+2024-03-04T14:49:03 INFO : Collected 1 read labels: [2] [file: /mnt/c/Users/Dell/OneDrive - emblebi/EBI/work/ena-CLI/test_data/run/SARS-CoV-2-Sample1_2.fastq.gz]
+2024-03-04T14:49:03 INFO : Has possible duplicate read name(s): false [file: /mnt/c/Users/Dell/OneDrive - emblebi/EBI/work/ena-CLI/test_data/run/SARS-CoV-2-Sample1_2.fastq.gz]
+2024-03-04T14:49:03 INFO : The submission has been validated successfully.
+2024-03-04T14:49:03 INFO : Connecting to FTP server : webin2.ebi.ac.uk
+2024-03-04T14:49:14 WARN : Retrying connecting to FTP server.
+2024-03-04T14:49:28 WARN : Retrying connecting to FTP server.
+2024-03-04T14:49:43 WARN : Retrying connecting to FTP server.
+2024-03-04T14:49:58 WARN : Retrying connecting to FTP server.
+2024-03-04T14:50:13 WARN : Retrying connecting to FTP server.
+2024-03-04T14:50:28 WARN : Retrying connecting to FTP server.
+2024-03-04T14:50:48 ERROR: Failed to connect to FTP server. Failed to upload files to FTP server because of a system error.
+uk.ac.ebi.ena.webin.cli.WebinCliException: Failed to connect to FTP server. Failed to upload files to FTP server because of a system error.
+	at uk.ac.ebi.ena.webin.cli.WebinCliException.error(WebinCliException.java:91)
+	at uk.ac.ebi.ena.webin.cli.WebinCli.submit(WebinCli.java:329)
+	at uk.ac.ebi.ena.webin.cli.WebinCli.execute(WebinCli.java:265)
+	at uk.ac.ebi.ena.webin.cli.WebinCli.__main(WebinCli.java:110)
+	at uk.ac.ebi.ena.webin.cli.WebinCli.main(WebinCli.java:91)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:577)
+	at org.springframework.boot.loader.MainMethodRunner.run(MainMethodRunner.java:49)
+	at org.springframework.boot.loader.Launcher.launch(Launcher.java:108)
+	at org.springframework.boot.loader.Launcher.launch(Launcher.java:58)
+	at org.springframework.boot.loader.JarLauncher.main(JarLauncher.java:65)
+Caused by: uk.ac.ebi.ena.webin.cli.WebinCliException: Failed to connect to FTP server.
+	at uk.ac.ebi.ena.webin.cli.WebinCliException.systemError(WebinCliException.java:71)
+	at uk.ac.ebi.ena.webin.cli.upload.FtpService.reconnect(FtpService.java:174)
+	at uk.ac.ebi.ena.webin.cli.upload.FtpService.connectToFtpServer(FtpService.java:128)
+	at uk.ac.ebi.ena.webin.cli.upload.FtpService.connect(FtpService.java:65)
+	at uk.ac.ebi.ena.webin.cli.WebinCli.submit(WebinCli.java:324)
+	... 9 common frames omitted
+Caused by: java.net.SocketTimeoutException: Read timed out
+	at java.base/sun.nio.ch.NioSocketImpl.timedRead(NioSocketImpl.java:280)
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:306)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:347)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:800)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:966)
+	at java.base/sun.security.ssl.SSLSocketInputRecord.read(SSLSocketInputRecord.java:478)
+	at java.base/sun.security.ssl.SSLSocketInputRecord.readHeader(SSLSocketInputRecord.java:472)
+	at java.base/sun.security.ssl.SSLSocketInputRecord.decode(SSLSocketInputRecord.java:160)
+	at java.base/sun.security.ssl.SSLTransport.decode(SSLTransport.java:111)
+	at java.base/sun.security.ssl.SSLSocketImpl.decode(SSLSocketImpl.java:1505)
+	at java.base/sun.security.ssl.SSLSocketImpl.readHandshakeRecord(SSLSocketImpl.java:1420)
+	at java.base/sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:455)
+	at java.base/sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:426)
+	at org.apache.commons.net.ftp.FTPSClient.sslNegotiation(FTPSClient.java:1043)
+	at org.apache.commons.net.ftp.FTPSClient._connectAction_(FTPSClient.java:245)
+	at org.apache.commons.net.SocketClient._connect(SocketClient.java:137)
+	at org.apache.commons.net.SocketClient.connect(SocketClient.java:289)
+	at org.apache.commons.net.SocketClient.connect(SocketClient.java:271)
+	at uk.ac.ebi.ena.webin.cli.upload.FtpService.lambda$reconnect$4(FtpService.java:136)
+	at uk.ac.ebi.ena.webin.cli.utils.RetryUtils.lambda$executeWithRetry$0(RetryUtils.java:65)
+	at org.springframework.retry.support.RetryTemplate.doExecute(RetryTemplate.java:329)
+	at org.springframework.retry.support.RetryTemplate.execute(RetryTemplate.java:209)
+	at uk.ac.ebi.ena.webin.cli.utils.RetryUtils.executeWithRetry(RetryUtils.java:60)
+	at uk.ac.ebi.ena.webin.cli.upload.FtpService.reconnect(FtpService.java:135)
+	... 12 common frames omitted

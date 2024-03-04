@@ -1,0 +1,4 @@
+STUDY	PRJEB72880
+NAME	todo2
+DESCRIPTION	your decription
+FLATFILE	filename2.embl.gz
