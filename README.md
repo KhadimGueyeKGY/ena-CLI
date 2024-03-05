@@ -3,6 +3,8 @@
 ## Introduction
 ENA-CLI is a command-line tool designed to facilitate the validation and submission of data to the European Nucleotide Archive (ENA). This tool streamlines the process of preparing and uploading data files, ensuring they meet ENA's submission requirements.
 
+## [templates](https://github.com/KhadimGueyeKGY/ena-CLI/blob/master/templates/templates.xlsx)
+
 ## Prerequisites
 Ensure you have the following dependencies installed:
 ```
