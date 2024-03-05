@@ -1,6 +1,0 @@
-INFO: Collected 5 reads [file: /mnt/c/Users/Dell/OneDrive - emblebi/EBI/work/ena-CLI/test_data/run/SARS-CoV-2-Sample1_1.fastq.gz]
-INFO: Collected 1 read labels: [1] [file: /mnt/c/Users/Dell/OneDrive - emblebi/EBI/work/ena-CLI/test_data/run/SARS-CoV-2-Sample1_1.fastq.gz]
-INFO: Has possible duplicate read name(s): false [file: /mnt/c/Users/Dell/OneDrive - emblebi/EBI/work/ena-CLI/test_data/run/SARS-CoV-2-Sample1_1.fastq.gz]
-INFO: Collected 5 reads [file: /mnt/c/Users/Dell/OneDrive - emblebi/EBI/work/ena-CLI/test_data/run/SARS-CoV-2-Sample1_2.fastq.gz]
-INFO: Collected 1 read labels: [2] [file: /mnt/c/Users/Dell/OneDrive - emblebi/EBI/work/ena-CLI/test_data/run/SARS-CoV-2-Sample1_2.fastq.gz]
-INFO: Has possible duplicate read name(s): false [file: /mnt/c/Users/Dell/OneDrive - emblebi/EBI/work/ena-CLI/test_data/run/SARS-CoV-2-Sample1_2.fastq.gz]

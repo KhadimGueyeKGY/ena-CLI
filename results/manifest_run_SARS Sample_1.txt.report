@@ -1,1 +1,0 @@
-ERROR: Invalid field value. Non-negative integer expected. [manifest file: /mnt/c/Users/Dell/OneDrive - emblebi/EBI/work/ena-CLI/results/manifest_run_SARS Sample_1.txt, line number: 6, field: INSERT_SIZE, value: 350.0]

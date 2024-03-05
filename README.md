@@ -18,12 +18,12 @@ Before using the ENA-CLI for submission, ensure you have uploaded your files to 
 
 #### Usage
 ```
-python ena-CLI.py project -h
+python ena-CLI project -h
 ```
 
 #### Example
 ```
-python ena-CLI.py project -u Webin-XXXX -p 'XXXXXX' -m templates/templates.xlsx -t
+python ena-CLI project -u Webin-XXXX -p 'XXXXXX' -m templates/templates.xlsx -t
 ```
 
 #### Options
@@ -36,12 +36,12 @@ python ena-CLI.py project -u Webin-XXXX -p 'XXXXXX' -m templates/templates.xlsx 
 
 #### Usage
 ```
-python ena-CLI.py sample -h
+python ena-CLI sample -h
 ```
 
 #### Example
 ```
-python ena-CLI.py sample -u Webin-XXXX -p 'XXXXXX' -m templates/templates.xlsx -t
+python ena-CLI sample -u Webin-XXXX -p 'XXXXXX' -m templates/templates.xlsx -t
 ```
 
 #### Options
@@ -54,12 +54,12 @@ python ena-CLI.py sample -u Webin-XXXX -p 'XXXXXX' -m templates/templates.xlsx -
 
 #### Usage
 ```
-python ena-CLI.py run -h
+python ena-CLI run -h
 ```
 
 #### Example
 ```
-python ena-CLI.py run -u Webin-XXXX -p 'XXXXXX' -m templates/templates.xlsx -i test_data/run -t
+python ena-CLI run -u Webin-XXXX -p 'XXXXXX' -m templates/templates.xlsx -i test_data/run -t
 ```
 
 #### Options
@@ -74,12 +74,12 @@ python ena-CLI.py run -u Webin-XXXX -p 'XXXXXX' -m templates/templates.xlsx -i t
 
 #### Usage
 ```
-python ena-CLI.py genome -h
+python ena-CLI genome -h
 ```
 
 #### Example
 ```
-python ena-CLI.py genome -u Webin-XXXX -p 'XXXXXX' -m templates/templates.xlsx -i test_data/genome -c genome -t
+python ena-CLI genome -u Webin-XXXX -p 'XXXXXX' -m templates/templates.xlsx -i test_data/genome -c genome -t
 ```
 
 #### Options
@@ -91,16 +91,36 @@ python ena-CLI.py genome -u Webin-XXXX -p 'XXXXXX' -m templates/templates.xlsx -
 - `-C`: Center name of the submitter (optional)
 - `-t`: Use Webin test service (optional)
 
+## Targeted Command
+
+The `targeted` command facilitates the submission of targeted sequences to the public repository ENA (European Nucleotide Archive). It requires the following mandatory arguments:
+
+- `-u`, `--username`: Webin submission account (e.g., Webin-XXX).
+- `-p`, `--password`: Password for the submission account.
+- `-m`, `--manifestFile`: Path to the manifest file specifying the details of the submission. The manifest file should follow the template provided in `templates/templates.xlsx`.
+- `-i`, `--inputDir`: Path to the input directory containing the files declared in the manifest file.
+
+Additionally, the following optional arguments can be provided:
+- `-C`, `--centerName`: The center name of the submitter (mandatory for broker accounts).
+- `-t`, `--test`: Use Webin test service instead of the production service. Please note that the Webin upload area is shared between test and production services, and that test submission files will not be archived.
+
+### Usage Example:
+
+```
+python ena-CLI targeted -u Webin-XXXX -p 'XXXXXX' -m templates/templates.xlsx -i test_data/targeted -t
+```
+
+
 ### 5. Other Submission
 
 #### Usage
 ```
-python ena-CLI.py other -h
+python ena-CLI other -h
 ```
 
 #### Example
 ```
-python ena-CLI.py other -u Webin-XXXX -p 'XXXXXX' -m templates/templates.xlsx -i test_data/ -a AMR_ANTIBIOGRAM -t
+python ena-CLI other -u Webin-XXXX -p 'XXXXXX' -m templates/templates.xlsx -i test_data/other -a AMR_ANTIBIOGRAM -t
 ```
 
 #### Options

@@ -9,7 +9,7 @@ class webin:
         command = [
             f"java -jar {webin_cli}",
             f"-context {type}",
-            f"-manifest '{manifest}'",
+            f"-manifest \"{manifest}\"",
             f"-inputDir {args.inputDir}",
             f"-userName {args.username}",
             f"-password {args.password}"
@@ -52,6 +52,8 @@ class webin:
                     else: 
                         name = manifestFile['sample'][i]
                     manifest = os.path.join(result_directory, f"manifest_run_{name}.txt")
+                    if '\\' in manifest :
+                        manifest =manifest.replace ('\\','/')
                     with open(manifest , 'w') as file:
                         for j in range(len(head)) : 
                             if not pd.isna(manifestFile[head[j]][i]):
@@ -78,10 +80,15 @@ class webin:
             if '#' not in manifestFile[head[0]][i]:
                 if not pd.isna(manifestFile['SAMPLE'][i]):
                     manifest = os.path.join(result_directory, f"manifest_genome_{manifestFile['SAMPLE'][i]}.txt")
+                    if '\\' in manifest :
+                        manifest =manifest.replace ('\\','/')
                     with open(manifest , 'w') as file:
                         for j in range(len(head)) : 
                             if not pd.isna(manifestFile[head[j]][i]):
-                                file.write(f'{head[j].upper()}\t{manifestFile[head[j]][i]}\n')
+                                if head[j].upper() == 'MINGAPLENGTH':
+                                    file.write(f'{head[j].upper()}\t{int(manifestFile[head[j]][i])}\n')
+                                else:
+                                    file.write(f'{head[j].upper()}\t{manifestFile[head[j]][i]}\n')
 
                 webin.webin_submission(manifest , args, webin_cli, manifestFile['SAMPLE'][i], args.context)
 
