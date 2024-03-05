@@ -147,3 +147,7 @@ python ena-CLI other -u Webin-XXXX -p 'XXXXXX' -m templates/templates.xlsx -i te
 
 ## Contact Information
 For any errors or assistance, please contact the [ENA helpdesk](https://www.ebi.ac.uk/ena/browser/support).
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
