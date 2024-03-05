@@ -12,6 +12,8 @@ pip install argparse pandas lxml
 ## File Upload Reminder
 Before using the ENA-CLI for other submission (5), ensure you have uploaded your files to ENA using the Webin file uploader. Detailed instructions on how to upload files can be found [here](https://ena-docs.readthedocs.io/en/latest/submit/fileprep/upload.html#uploading-files-to-ena).
 
+## [Doker image](https://hub.docker.com/r/khadimgueyekgy1/ena-cli)
+
 ## Usage
 
 ### 1. Project Submission
@@ -91,7 +93,7 @@ python ena-CLI genome -u Webin-XXXX -p 'XXXXXX' -m templates/templates.xlsx -i t
 - `-C`: Center name of the submitter (optional)
 - `-t`: Use Webin test service (optional)
 
-## Targeted Command
+### Targeted Command
 
 The `targeted` command facilitates the submission of targeted sequences to the public repository ENA (European Nucleotide Archive). It requires the following mandatory arguments:
 
